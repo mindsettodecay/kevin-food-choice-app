@@ -20,6 +20,55 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="./manifest.json">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lato:wght@100;300;400;700;900&family=Source+Sans+Pro:wght@200;300;400;600;700;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=Raleway:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Merriweather:wght@300;400;700;900&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #ff6b6b;
+            --success-color: #51cf66;
+            --warning-color: #ffd43b;
+            --error-color: #ff6b6b;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-accent: #495057;
+            --surface: #ffffff;
+            --surface-variant: #f8f9fa;
+            --surface-elevated: #ffffff;
+            --card-background: #ffffff;
+            --card-border: #e9ecef;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --card-hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --border-color: #e9ecef;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --font-weight-extrabold: 800;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -27,69 +76,166 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, var(--primary-color, #667eea) 0%, var(--secondary-color, #764ba2) 100%);
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            transition: all 0.3s ease;
+            padding: var(--spacing-lg);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-feature-settings: 'kern' 1, 'liga' 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            padding: 30px;
-            max-width: 1200px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            max-width: 1400px;
             width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+            z-index: 2;
         }
 
         h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
         }
 
         .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.2em;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
+            font-size: 1.125rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .app-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--surface-variant);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--surface-variant);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .status-item:hover {
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .status-icon {
+            font-size: 1rem;
         }
 
         .tabs {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
-            gap: 10px;
+            margin-bottom: var(--spacing-2xl);
+            gap: var(--spacing-sm);
             flex-wrap: wrap;
+            background: var(--surface-variant);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
         }
 
         .tab {
-            padding: 15px 30px;
-            background: var(--primary-color, #667eea);
-            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: transparent;
+            color: var(--text-secondary);
             border: none;
-            border-radius: 20px;
-            font-size: 1.2em;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            white-space: nowrap;
+            font-family: inherit;
         }
 
         .tab:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
         }
 
         .tab.active {
-            background: var(--secondary-color, #764ba2);
-            transform: scale(1.05);
+            background: var(--surface);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+            font-weight: 600;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: 2px;
         }
 
         .food-grid {
@@ -100,20 +246,21 @@
         }
 
         .food-item {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
+            background: var(--card-background);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--card-border);
             position: relative;
             overflow: hidden;
         }
 
         .food-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--card-hover-shadow);
         }
 
         .food-item.selected {
@@ -138,15 +285,17 @@
         }
 
         .food-name {
-            font-size: 1.3em;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-size: var(--font-size-lg);
+            color: var(--text-primary);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-xs);
+            font-family: var(--font-family);
         }
 
         .food-desc {
-            font-size: 0.9em;
-            color: #666;
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            font-family: var(--font-family);
         }
 
         .combo-counter {
@@ -275,8 +424,9 @@
         .action-buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: var(--spacing-md);
             flex-wrap: wrap;
+            margin-top: var(--spacing-xl);
         }
 
         .install-btn {
@@ -351,62 +501,208 @@
         }
 
         .action-btn {
-            padding: 15px 40px;
-            font-size: 1.3em;
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 0.875rem;
+            font-weight: 600;
             border: none;
-            border-radius: 25px;
+            border-radius: var(--radius-lg);
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: white;
-            font-weight: bold;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
         }
 
         .done-btn {
-            background: #4caf50;
+            background: linear-gradient(135deg, var(--success-color), #40c057);
+            box-shadow: var(--shadow-md);
         }
 
         .done-btn:hover {
-            background: #45a049;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #40c057, var(--success-color));
         }
 
         .clear-btn {
-            background: #f44336;
+            background: linear-gradient(135deg, var(--error-color), #fa5252);
+            box-shadow: var(--shadow-md);
         }
 
         .clear-btn:hover {
-            background: #e53935;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #fa5252, var(--error-color));
         }
 
         .custom-btn {
-            background: #ff9800;
+            background: linear-gradient(135deg, var(--warning-color), #fab005);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
         }
 
         .custom-btn:hover {
-            background: #fb8c00;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #fab005, var(--warning-color));
         }
 
         .voice-btn {
-            background: #2196f3;
+            background: linear-gradient(135deg, #339af0, #228be6);
+            box-shadow: var(--shadow-md);
         }
 
         .voice-btn:hover {
-            background: #1976d2;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #228be6, #339af0);
         }
 
         .voice-btn.active {
-            background: #4caf50;
-            animation: voicePulse 1s infinite;
+            background: linear-gradient(135deg, var(--success-color), #40c057);
+            animation: voicePulse 2s infinite;
+        }
+
+        .install-btn {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            box-shadow: var(--shadow-md);
+            display: inline-flex !important;
+        }
+
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #6d28d9, #7c3aed);
+        }
+
+        .view-mode-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: var(--shadow-md);
+        }
+
+        .view-mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .theme-btn {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #db2777, #ec4899);
         }
 
         @keyframes voicePulse {
-            0% { box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); }
-            50% { box-shadow: 0 5px 30px rgba(76, 175, 80, 0.6); }
-            100% { box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); }
+            0% { 
+                box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+                transform: translateY(-2px) scale(1);
+            }
+            50% { 
+                box-shadow: 0 5px 30px rgba(76, 175, 80, 0.6);
+                transform: translateY(-2px) scale(1.05);
+            }
+            100% { 
+                box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+                transform: translateY(-2px) scale(1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+            100% {
+                background-position: calc(200px + 100%) 0;
+            }
+        }
+
+        /* Loading skeleton animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        /* Smooth page transitions */
+        .container {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .food-item {
+            animation: fadeInUp 0.4s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .food-item:nth-child(1) { animation-delay: 0.1s; }
+        .food-item:nth-child(2) { animation-delay: 0.15s; }
+        .food-item:nth-child(3) { animation-delay: 0.2s; }
+        .food-item:nth-child(4) { animation-delay: 0.25s; }
+        .food-item:nth-child(5) { animation-delay: 0.3s; }
+        .food-item:nth-child(6) { animation-delay: 0.35s; }
+
+        /* Modern focus styles */
+        .action-btn:focus,
+        .tab:focus,
+        .food-item:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Disabled button styles */
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .action-btn:disabled::before {
+            display: none;
         }
 
         .modal {
@@ -687,20 +983,110 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: var(--surface);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
             z-index: 2000;
             display: none;
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
         }
 
         .theme-panel h3 {
-            margin-bottom: 20px;
-            color: #333;
+            margin-bottom: var(--spacing-xl);
+            color: var(--text-primary);
             text-align: center;
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .theme-section {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .theme-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .theme-section h4 {
+            color: var(--text-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .font-selector {
+            width: 100%;
+        }
+
+        .theme-select {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-select:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+            border-color: var(--primary-color);
+        }
+
+        .slider-group {
+            width: 100%;
+        }
+
+        .theme-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--surface-variant);
+            outline: none;
+            margin-top: var(--spacing-sm);
+            cursor: pointer;
+        }
+
+        .theme-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .theme-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .theme-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-md);
         }
 
         .theme-presets {
@@ -808,8 +1194,30 @@
 </head>
 <body>
     <div class="container">
-        <h1>🍴 Kevin's Food Choice Helper 🍴</h1>
-        <p class="subtitle">Tap the foods you want to eat today!</p>
+        <div class="header">
+            <div class="app-badge">
+                <span>✨</span>
+                <span>Powered by AI</span>
+            </div>
+            <h1>🍴 Kevin's Food Choice Helper</h1>
+            <p class="subtitle">Discover your perfect meal with intelligent food recommendations</p>
+            
+            <!-- Status Bar -->
+            <div class="status-bar" id="statusBar">
+                <div class="status-item">
+                    <span class="status-icon">🎯</span>
+                    <span class="status-text" id="selectionCount">0 selections</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">📱</span>
+                    <span class="status-text" id="deviceMode">Mobile</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">🎨</span>
+                    <span class="status-text" id="themeStatus">Default</span>
+                </div>
+            </div>
+        </div>
         
         <div class="tabs">
             <button class="tab active" onclick="showCategory('breakfast')">🌅 Breakfast</button>
@@ -836,7 +1244,7 @@
             <button class="action-btn clear-btn" onclick="clearSelections()">🗑️ Clear All</button>
             <button class="action-btn custom-btn" onclick="toggleCustomForm()">➕ Add Custom Food</button>
             <button class="action-btn voice-btn" id="voiceToggle" onclick="toggleVoice()">🔊 Voice On</button>
-            <button class="action-btn install-btn" id="installBtn" onclick="installApp()" style="display: none;">📱 Install App</button>
+            <button class="action-btn install-btn" id="installBtn" onclick="installApp()">📱 Install App</button>
             <button class="action-btn view-mode-btn" id="viewModeBtn" onclick="toggleViewMode()">🖥️ Desktop Mode</button>
             <button class="action-btn theme-btn" onclick="toggleThemePanel()">🎨 Themes</button>
         </div>
@@ -879,29 +1287,99 @@
     </div>
 
     <div class="theme-panel" id="themePanel">
-        <h3>🎨 Choose Your Theme</h3>
+        <h3>🎨 Advanced Theme Editor</h3>
         
-        <div class="theme-presets">
-            <div class="theme-preset active" onclick="selectPreset('default')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" title="Default Blue-Purple"></div>
-            <div class="theme-preset" onclick="selectPreset('sunset')" style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)" title="Sunset Orange"></div>
-            <div class="theme-preset" onclick="selectPreset('ocean')" style="background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%)" title="Ocean Blue-Green"></div>
-            <div class="theme-preset" onclick="selectPreset('forest')" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%)" title="Forest Green"></div>
-            <div class="theme-preset" onclick="selectPreset('cherry')" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%)" title="Cherry Red"></div>
-            <div class="theme-preset" onclick="selectPreset('dark')" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%)" title="Dark Theme"></div>
+        <!-- Quick Presets -->
+        <div class="theme-section">
+            <h4>Quick Presets</h4>
+            <div class="theme-presets">
+                <div class="theme-preset active" onclick="selectPreset('default')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" title="Default Blue-Purple"></div>
+                <div class="theme-preset" onclick="selectPreset('sunset')" style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)" title="Sunset Orange"></div>
+                <div class="theme-preset" onclick="selectPreset('ocean')" style="background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%)" title="Ocean Blue-Green"></div>
+                <div class="theme-preset" onclick="selectPreset('forest')" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%)" title="Forest Green"></div>
+                <div class="theme-preset" onclick="selectPreset('cherry')" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%)" title="Cherry Red"></div>
+                <div class="theme-preset" onclick="selectPreset('dark')" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%)" title="Dark Theme"></div>
+            </div>
         </div>
-        
-        <div class="color-picker-group">
-            <label for="primaryColor">Primary Color:</label>
-            <input type="color" id="primaryColor" class="color-picker" value="#667eea">
+
+        <!-- Font Selection -->
+        <div class="theme-section">
+            <h4>Typography</h4>
+            <div class="font-selector">
+                <label for="fontFamily">Font Family:</label>
+                <select id="fontFamily" class="theme-select" onchange="updateFont()">
+                    <option value="'Inter', sans-serif">Inter (Default)</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                    <option value="'Open Sans', sans-serif">Open Sans</option>
+                    <option value="'Lato', sans-serif">Lato</option>
+                    <option value="'Source Sans Pro', sans-serif">Source Sans Pro</option>
+                    <option value="'Nunito', sans-serif">Nunito</option>
+                    <option value="'Raleway', sans-serif">Raleway</option>
+                    <option value="'Playfair Display', serif">Playfair Display</option>
+                    <option value="'Merriweather', serif">Merriweather</option>
+                    <option value="'Fira Code', monospace">Fira Code</option>
+                </select>
+            </div>
         </div>
-        
-        <div class="color-picker-group">
-            <label for="secondaryColor">Secondary Color:</label>
-            <input type="color" id="secondaryColor" class="color-picker" value="#764ba2">
+
+        <!-- Background Colors -->
+        <div class="theme-section">
+            <h4>Background Colors</h4>
+            <div class="color-grid">
+                <div class="color-picker-group">
+                    <label for="primaryColor">Primary Color:</label>
+                    <input type="color" id="primaryColor" class="color-picker" value="#667eea">
+                </div>
+                <div class="color-picker-group">
+                    <label for="secondaryColor">Secondary Color:</label>
+                    <input type="color" id="secondaryColor" class="color-picker" value="#764ba2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Styling -->
+        <div class="theme-section">
+            <h4>Card Styling</h4>
+            <div class="color-grid">
+                <div class="color-picker-group">
+                    <label for="cardBackground">Card Background:</label>
+                    <input type="color" id="cardBackground" class="color-picker" value="#ffffff">
+                </div>
+                <div class="color-picker-group">
+                    <label for="cardBorder">Card Border:</label>
+                    <input type="color" id="cardBorder" class="color-picker" value="#e9ecef">
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Colors -->
+        <div class="theme-section">
+            <h4>Text Colors</h4>
+            <div class="color-grid">
+                <div class="color-picker-group">
+                    <label for="textPrimary">Primary Text:</label>
+                    <input type="color" id="textPrimary" class="color-picker" value="#212529">
+                </div>
+                <div class="color-picker-group">
+                    <label for="textSecondary">Secondary Text:</label>
+                    <input type="color" id="textSecondary" class="color-picker" value="#6c757d">
+                </div>
+            </div>
+        </div>
+
+        <!-- Border Radius -->
+        <div class="theme-section">
+            <h4>Border Radius</h4>
+            <div class="slider-group">
+                <label for="borderRadius">Roundness: <span id="radiusValue">16px</span></label>
+                <input type="range" id="borderRadius" class="theme-slider" min="0" max="30" value="16" oninput="updateRadius(this.value)">
+            </div>
         </div>
         
         <div class="theme-buttons">
-            <button class="apply-theme" onclick="applyCustomTheme()">Apply</button>
+            <button class="apply-theme" onclick="applyCustomTheme()">Apply Theme</button>
             <button class="reset-theme" onclick="resetToDefault()">Reset</button>
             <button class="close-theme" onclick="toggleThemePanel()">Close</button>
         </div>
@@ -1205,6 +1683,27 @@
                     </div>
                 `).join('');
             }
+            
+            // Update status bar
+            updateStatusBar();
+        }
+
+        function updateStatusBar() {
+            const selectionCount = document.getElementById('selectionCount');
+            const deviceMode = document.getElementById('deviceMode');
+            const themeStatus = document.getElementById('themeStatus');
+            
+            // Update selection count
+            const count = selectedFoods.length;
+            selectionCount.textContent = count === 0 ? 'No selections' : 
+                                       count === 1 ? '1 selection' : 
+                                       `${count} selections`;
+            
+            // Update device mode
+            deviceMode.textContent = isDesktopMode ? 'Desktop' : 'Mobile';
+            
+            // Update theme status
+            themeStatus.textContent = currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1);
         }
         
         function clearSelections() {
@@ -1336,14 +1835,17 @@
         function showInstallButton() {
             const installBtn = document.getElementById('installBtn');
             if (installBtn) {
-                installBtn.style.display = 'inline-block';
+                installBtn.style.display = 'inline-flex';
+                installBtn.disabled = false;
             }
         }
 
         function hideInstallButton() {
             const installBtn = document.getElementById('installBtn');
             if (installBtn) {
-                installBtn.style.display = 'none';
+                installBtn.textContent = '✅ Installed';
+                installBtn.disabled = true;
+                installBtn.style.opacity = '0.6';
             }
         }
 
@@ -1401,12 +1903,66 @@
 
         // Theme System
         const themes = {
-            default: { primary: '#667eea', secondary: '#764ba2' },
-            sunset: { primary: '#ff7e5f', secondary: '#feb47b' },
-            ocean: { primary: '#00c9ff', secondary: '#92fe9d' },
-            forest: { primary: '#134e5e', secondary: '#71b280' },
-            cherry: { primary: '#eb3349', secondary: '#f45c43' },
-            dark: { primary: '#2c3e50', secondary: '#34495e' }
+            default: { 
+                primary: '#667eea', 
+                secondary: '#764ba2',
+                cardBackground: '#ffffff',
+                cardBorder: '#e9ecef',
+                textPrimary: '#212529',
+                textSecondary: '#6c757d',
+                fontFamily: "'Inter', sans-serif",
+                borderRadius: '16'
+            },
+            sunset: { 
+                primary: '#ff7e5f', 
+                secondary: '#feb47b',
+                cardBackground: '#fff7ed',
+                cardBorder: '#fed7aa',
+                textPrimary: '#9a3412',
+                textSecondary: '#c2410c',
+                fontFamily: "'Poppins', sans-serif",
+                borderRadius: '20'
+            },
+            ocean: { 
+                primary: '#00c9ff', 
+                secondary: '#92fe9d',
+                cardBackground: '#ecfeff',
+                cardBorder: '#a5f3fc',
+                textPrimary: '#164e63',
+                textSecondary: '#0891b2',
+                fontFamily: "'Lato', sans-serif",
+                borderRadius: '12'
+            },
+            forest: { 
+                primary: '#134e5e', 
+                secondary: '#71b280',
+                cardBackground: '#f0fdf4',
+                cardBorder: '#bbf7d0',
+                textPrimary: '#14532d',
+                textSecondary: '#166534',
+                fontFamily: "'Source Sans Pro', sans-serif",
+                borderRadius: '8'
+            },
+            cherry: { 
+                primary: '#eb3349', 
+                secondary: '#f45c43',
+                cardBackground: '#fef2f2',
+                cardBorder: '#fecaca',
+                textPrimary: '#7f1d1d',
+                textSecondary: '#991b1b',
+                fontFamily: "'Montserrat', sans-serif",
+                borderRadius: '24'
+            },
+            dark: { 
+                primary: '#2c3e50', 
+                secondary: '#34495e',
+                cardBackground: '#1f2937',
+                cardBorder: '#374151',
+                textPrimary: '#f9fafb',
+                textSecondary: '#d1d5db',
+                fontFamily: "'Roboto', sans-serif",
+                borderRadius: '14'
+            }
         };
 
         function toggleThemePanel() {
@@ -1427,13 +1983,19 @@
             // Add active class to selected preset
             event.target.classList.add('active');
             
-            // Update color pickers
+            // Update all inputs
             const theme = themes[themeName];
-            document.getElementById('primaryColor').value = theme.primary;
-            document.getElementById('secondaryColor').value = theme.secondary;
+            loadThemeInputs(theme);
             
             currentTheme = themeName;
-            applyTheme(theme.primary, theme.secondary);
+            applyFullTheme(theme);
+            updateStatusBar();
+            
+            // Save preset to localStorage
+            localStorage.setItem('kevinFoodTheme', JSON.stringify({
+                ...theme,
+                name: themeName
+            }));
             
             if (voiceEnabled) {
                 speak(`${themeName} theme selected`);
@@ -1443,16 +2005,40 @@
         function applyCustomTheme() {
             const primary = document.getElementById('primaryColor').value;
             const secondary = document.getElementById('secondaryColor').value;
+            const cardBackground = document.getElementById('cardBackground').value;
+            const cardBorder = document.getElementById('cardBorder').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const textSecondary = document.getElementById('textSecondary').value;
+            const fontFamily = document.getElementById('fontFamily').value;
+            const borderRadius = document.getElementById('borderRadius').value;
             
-            applyTheme(primary, secondary);
+            applyFullTheme({
+                primary,
+                secondary,
+                cardBackground,
+                cardBorder,
+                textPrimary,
+                textSecondary,
+                fontFamily,
+                borderRadius
+            });
+            
             currentTheme = 'custom';
             
             // Save to localStorage
             localStorage.setItem('kevinFoodTheme', JSON.stringify({
-                primary: primary,
-                secondary: secondary,
+                primary,
+                secondary,
+                cardBackground,
+                cardBorder,
+                textPrimary,
+                textSecondary,
+                fontFamily,
+                borderRadius,
                 name: 'custom'
             }));
+            
+            updateStatusBar();
             
             if (voiceEnabled) {
                 speak('Custom theme applied');
@@ -1464,10 +2050,59 @@
             document.documentElement.style.setProperty('--secondary-color', secondary);
         }
 
+        function applyFullTheme(theme) {
+            document.documentElement.style.setProperty('--primary-color', theme.primary);
+            document.documentElement.style.setProperty('--secondary-color', theme.secondary);
+            document.documentElement.style.setProperty('--card-background', theme.cardBackground);
+            document.documentElement.style.setProperty('--card-border', theme.cardBorder);
+            document.documentElement.style.setProperty('--text-primary', theme.textPrimary);
+            document.documentElement.style.setProperty('--text-secondary', theme.textSecondary);
+            document.documentElement.style.setProperty('--font-family', theme.fontFamily);
+            document.documentElement.style.setProperty('--radius-lg', theme.borderRadius + 'px');
+        }
+
+        function updateFont() {
+            const fontFamily = document.getElementById('fontFamily').value;
+            document.documentElement.style.setProperty('--font-family', fontFamily);
+            
+            if (voiceEnabled) {
+                const fontName = fontFamily.split(',')[0].replace(/['"]/g, '');
+                speak(`Font changed to ${fontName}`);
+            }
+        }
+
+        function updateRadius(value) {
+            document.getElementById('radiusValue').textContent = value + 'px';
+            document.documentElement.style.setProperty('--radius-lg', value + 'px');
+        }
+
+        function loadThemeInputs(theme) {
+            if (theme.primary) document.getElementById('primaryColor').value = theme.primary;
+            if (theme.secondary) document.getElementById('secondaryColor').value = theme.secondary;
+            if (theme.cardBackground) document.getElementById('cardBackground').value = theme.cardBackground;
+            if (theme.cardBorder) document.getElementById('cardBorder').value = theme.cardBorder;
+            if (theme.textPrimary) document.getElementById('textPrimary').value = theme.textPrimary;
+            if (theme.textSecondary) document.getElementById('textSecondary').value = theme.textSecondary;
+            if (theme.fontFamily) document.getElementById('fontFamily').value = theme.fontFamily;
+            if (theme.borderRadius) {
+                document.getElementById('borderRadius').value = theme.borderRadius;
+                document.getElementById('radiusValue').textContent = theme.borderRadius + 'px';
+            }
+        }
+
         function resetToDefault() {
-            const defaultTheme = themes.default;
-            document.getElementById('primaryColor').value = defaultTheme.primary;
-            document.getElementById('secondaryColor').value = defaultTheme.secondary;
+            const defaultTheme = {
+                primary: '#667eea',
+                secondary: '#764ba2',
+                cardBackground: '#ffffff',
+                cardBorder: '#e9ecef',
+                textPrimary: '#212529',
+                textSecondary: '#6c757d',
+                fontFamily: "'Inter', sans-serif",
+                borderRadius: '16'
+            };
+            
+            loadThemeInputs(defaultTheme);
             
             // Update preset selection
             document.querySelectorAll('.theme-preset').forEach(preset => {
@@ -1475,11 +2110,12 @@
             });
             document.querySelector('.theme-preset[onclick*="default"]').classList.add('active');
             
-            applyTheme(defaultTheme.primary, defaultTheme.secondary);
+            applyFullTheme(defaultTheme);
             currentTheme = 'default';
             
             // Remove from localStorage
             localStorage.removeItem('kevinFoodTheme');
+            updateStatusBar();
             
             if (voiceEnabled) {
                 speak('Theme reset to default');
@@ -1491,9 +2127,18 @@
             const savedTheme = localStorage.getItem('kevinFoodTheme');
             if (savedTheme) {
                 const theme = JSON.parse(savedTheme);
-                applyTheme(theme.primary, theme.secondary);
-                document.getElementById('primaryColor').value = theme.primary;
-                document.getElementById('secondaryColor').value = theme.secondary;
+                
+                // Handle both old and new theme formats
+                if (theme.cardBackground) {
+                    applyFullTheme(theme);
+                    loadThemeInputs(theme);
+                } else {
+                    // Legacy theme format
+                    applyTheme(theme.primary, theme.secondary);
+                    document.getElementById('primaryColor').value = theme.primary;
+                    document.getElementById('secondaryColor').value = theme.secondary;
+                }
+                
                 currentTheme = theme.name;
             }
         }
@@ -1530,6 +2175,7 @@
             }
             
             saveViewModePreference();
+            updateStatusBar();
         }
 
         function updateViewport(content) {
@@ -1593,14 +2239,17 @@
         function showInstallButton() {
             const installBtn = document.getElementById('installBtn');
             if (installBtn) {
-                installBtn.style.display = 'inline-block';
+                installBtn.style.display = 'inline-flex';
+                installBtn.disabled = false;
             }
         }
 
         function hideInstallButton() {
             const installBtn = document.getElementById('installBtn');
             if (installBtn) {
-                installBtn.style.display = 'none';
+                installBtn.textContent = '✅ Installed';
+                installBtn.disabled = true;
+                installBtn.style.opacity = '0.6';
             }
         }
 
@@ -1702,6 +2351,7 @@
         loadFoods();
         loadSavedTheme();
         initializeMobileFeatures();
+        updateStatusBar();
         
         // Close modal when clicking outside
         window.onclick = function(event) {
