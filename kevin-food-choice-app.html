@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" id="viewport-meta">
     <title>Kevin's Food Choice Helper</title>
     
     <!-- PWA Meta Tags -->
@@ -28,12 +28,13 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color, #667eea) 0%, var(--secondary-color, #764ba2) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -71,7 +72,7 @@
 
         .tab {
             padding: 15px 30px;
-            background: #667eea;
+            background: var(--primary-color, #667eea);
             color: white;
             border: none;
             border-radius: 20px;
@@ -87,7 +88,7 @@
         }
 
         .tab.active {
-            background: #764ba2;
+            background: var(--secondary-color, #764ba2);
             transform: scale(1.05);
         }
 
@@ -539,6 +540,257 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        .view-mode-btn {
+            background: #ff5722;
+        }
+
+        .view-mode-btn:hover {
+            background: #e64a19;
+            transform: translateY(-3px);
+        }
+
+        .theme-btn {
+            background: #9c27b0;
+        }
+
+        .theme-btn:hover {
+            background: #7b1fa2;
+            transform: translateY(-3px);
+        }
+
+        .install-btn {
+            background: #2196f3;
+        }
+
+        .install-btn:hover {
+            background: #1976d2;
+            transform: translateY(-3px);
+        }
+
+        .install-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .desktop-mode {
+            transform: scale(0.7);
+            transform-origin: top left;
+            width: 142.86%;
+            height: 142.86%;
+            overflow: auto;
+        }
+
+        .desktop-mode .container {
+            max-width: 1400px;
+            transform: scale(1.2);
+        }
+
+        .zoom-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color, #667eea);
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-btn:hover {
+            background: var(--secondary-color, #764ba2);
+            transform: scale(1.1);
+        }
+
+        .zoom-display {
+            color: white;
+            font-size: 0.9em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(33, 150, 243, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3);
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .install-prompt button {
+            background: white;
+            color: #2196f3;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .install-prompt button:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .install-prompt .close-btn {
+            background: transparent;
+            color: white;
+            font-size: 1.2em;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .install-prompt .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            display: none;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .theme-panel h3 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .theme-presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .theme-preset {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .theme-preset:hover {
+            transform: scale(1.1);
+            border-color: #333;
+        }
+
+        .theme-preset.active {
+            border-color: #4caf50;
+            transform: scale(1.1);
+        }
+
+        .color-picker-group {
+            margin-bottom: 15px;
+        }
+
+        .color-picker-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .color-picker {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .theme-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .apply-theme {
+            background: #4caf50;
+            color: white;
+        }
+
+        .apply-theme:hover {
+            background: #45a049;
+        }
+
+        .close-theme {
+            background: #f44336;
+            color: white;
+        }
+
+        .close-theme:hover {
+            background: #e53935;
+        }
+
+        .reset-theme {
+            background: #ff9800;
+            color: white;
+        }
+
+        .reset-theme:hover {
+            background: #fb8c00;
+        }
+
         @media (max-width: 768px) {
             .food-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -585,6 +837,8 @@
             <button class="action-btn custom-btn" onclick="toggleCustomForm()">➕ Add Custom Food</button>
             <button class="action-btn voice-btn" id="voiceToggle" onclick="toggleVoice()">🔊 Voice On</button>
             <button class="action-btn install-btn" id="installBtn" onclick="installApp()" style="display: none;">📱 Install App</button>
+            <button class="action-btn view-mode-btn" id="viewModeBtn" onclick="toggleViewMode()">🖥️ Desktop Mode</button>
+            <button class="action-btn theme-btn" onclick="toggleThemePanel()">🎨 Themes</button>
         </div>
         
         <div class="custom-form" id="customForm">
@@ -615,6 +869,42 @@
         <span>📱 Install this app for a better experience!</span>
         <button onclick="installApp()">Install</button>
         <button class="close-btn" onclick="dismissInstallPrompt()">×</button>
+    </div>
+
+    <div class="zoom-controls" id="zoomControls" style="display: none;">
+        <button class="zoom-btn" onclick="zoomIn()">+</button>
+        <div class="zoom-display" id="zoomDisplay">100%</div>
+        <button class="zoom-btn" onclick="zoomOut()">−</button>
+        <button class="zoom-btn" onclick="resetZoom()" title="Reset">⌂</button>
+    </div>
+
+    <div class="theme-panel" id="themePanel">
+        <h3>🎨 Choose Your Theme</h3>
+        
+        <div class="theme-presets">
+            <div class="theme-preset active" onclick="selectPreset('default')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" title="Default Blue-Purple"></div>
+            <div class="theme-preset" onclick="selectPreset('sunset')" style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)" title="Sunset Orange"></div>
+            <div class="theme-preset" onclick="selectPreset('ocean')" style="background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%)" title="Ocean Blue-Green"></div>
+            <div class="theme-preset" onclick="selectPreset('forest')" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%)" title="Forest Green"></div>
+            <div class="theme-preset" onclick="selectPreset('cherry')" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%)" title="Cherry Red"></div>
+            <div class="theme-preset" onclick="selectPreset('dark')" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%)" title="Dark Theme"></div>
+        </div>
+        
+        <div class="color-picker-group">
+            <label for="primaryColor">Primary Color:</label>
+            <input type="color" id="primaryColor" class="color-picker" value="#667eea">
+        </div>
+        
+        <div class="color-picker-group">
+            <label for="secondaryColor">Secondary Color:</label>
+            <input type="color" id="secondaryColor" class="color-picker" value="#764ba2">
+        </div>
+        
+        <div class="theme-buttons">
+            <button class="apply-theme" onclick="applyCustomTheme()">Apply</button>
+            <button class="reset-theme" onclick="resetToDefault()">Reset</button>
+            <button class="close-theme" onclick="toggleThemePanel()">Close</button>
+        </div>
     </div>
     
     <script>
@@ -698,6 +988,9 @@
         let comboCounters = {};
         let comboTimers = {};
         let deferredPrompt;
+        let isDesktopMode = false;
+        let currentZoom = 1;
+        let currentTheme = 'default';
         
         // Initialize speech synthesis
         const synth = window.speechSynthesis;
@@ -1106,15 +1399,321 @@
             }
         });
 
+        // Theme System
+        const themes = {
+            default: { primary: '#667eea', secondary: '#764ba2' },
+            sunset: { primary: '#ff7e5f', secondary: '#feb47b' },
+            ocean: { primary: '#00c9ff', secondary: '#92fe9d' },
+            forest: { primary: '#134e5e', secondary: '#71b280' },
+            cherry: { primary: '#eb3349', secondary: '#f45c43' },
+            dark: { primary: '#2c3e50', secondary: '#34495e' }
+        };
+
+        function toggleThemePanel() {
+            const panel = document.getElementById('themePanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            
+            if (voiceEnabled && panel.style.display === 'block') {
+                speak('Theme panel opened');
+            }
+        }
+
+        function selectPreset(themeName) {
+            // Remove active class from all presets
+            document.querySelectorAll('.theme-preset').forEach(preset => {
+                preset.classList.remove('active');
+            });
+            
+            // Add active class to selected preset
+            event.target.classList.add('active');
+            
+            // Update color pickers
+            const theme = themes[themeName];
+            document.getElementById('primaryColor').value = theme.primary;
+            document.getElementById('secondaryColor').value = theme.secondary;
+            
+            currentTheme = themeName;
+            applyTheme(theme.primary, theme.secondary);
+            
+            if (voiceEnabled) {
+                speak(`${themeName} theme selected`);
+            }
+        }
+
+        function applyCustomTheme() {
+            const primary = document.getElementById('primaryColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            
+            applyTheme(primary, secondary);
+            currentTheme = 'custom';
+            
+            // Save to localStorage
+            localStorage.setItem('kevinFoodTheme', JSON.stringify({
+                primary: primary,
+                secondary: secondary,
+                name: 'custom'
+            }));
+            
+            if (voiceEnabled) {
+                speak('Custom theme applied');
+            }
+        }
+
+        function applyTheme(primary, secondary) {
+            document.documentElement.style.setProperty('--primary-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+        }
+
+        function resetToDefault() {
+            const defaultTheme = themes.default;
+            document.getElementById('primaryColor').value = defaultTheme.primary;
+            document.getElementById('secondaryColor').value = defaultTheme.secondary;
+            
+            // Update preset selection
+            document.querySelectorAll('.theme-preset').forEach(preset => {
+                preset.classList.remove('active');
+            });
+            document.querySelector('.theme-preset[onclick*="default"]').classList.add('active');
+            
+            applyTheme(defaultTheme.primary, defaultTheme.secondary);
+            currentTheme = 'default';
+            
+            // Remove from localStorage
+            localStorage.removeItem('kevinFoodTheme');
+            
+            if (voiceEnabled) {
+                speak('Theme reset to default');
+            }
+        }
+
+        // Load saved theme
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('kevinFoodTheme');
+            if (savedTheme) {
+                const theme = JSON.parse(savedTheme);
+                applyTheme(theme.primary, theme.secondary);
+                document.getElementById('primaryColor').value = theme.primary;
+                document.getElementById('secondaryColor').value = theme.secondary;
+                currentTheme = theme.name;
+            }
+        }
+
+        // View Mode and Zoom Functions
+        function toggleViewMode() {
+            const body = document.body;
+            const btn = document.getElementById('viewModeBtn');
+            const zoomControls = document.getElementById('zoomControls');
+            
+            isDesktopMode = !isDesktopMode;
+            
+            if (isDesktopMode) {
+                // Enable desktop mode
+                body.classList.add('desktop-mode');
+                btn.textContent = '📱 Mobile Mode';
+                zoomControls.style.display = 'flex';
+                updateViewport('width=1200, initial-scale=0.3, user-scalable=yes');
+                
+                if (voiceEnabled) {
+                    speak('Desktop mode enabled');
+                }
+            } else {
+                // Enable mobile mode
+                body.classList.remove('desktop-mode');
+                btn.textContent = '🖥️ Desktop Mode';
+                zoomControls.style.display = 'none';
+                resetZoom();
+                updateViewport('width=device-width, initial-scale=1.0');
+                
+                if (voiceEnabled) {
+                    speak('Mobile mode enabled');
+                }
+            }
+            
+            saveViewModePreference();
+        }
+
+        function updateViewport(content) {
+            const viewport = document.getElementById('viewport-meta');
+            viewport.setAttribute('content', content);
+        }
+
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + 0.1, 2.0);
+            applyZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - 0.1, 0.5);
+            applyZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1.0;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const container = document.querySelector('.container');
+            if (isDesktopMode) {
+                container.style.transform = `scale(${currentZoom * 1.2})`;
+            } else {
+                container.style.transform = `scale(${currentZoom})`;
+            }
+            
+            const zoomDisplay = document.getElementById('zoomDisplay');
+            zoomDisplay.textContent = Math.round(currentZoom * 100) + '%';
+        }
+
+        // PWA Installation Functions
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        hideInstallButton();
+                        dismissInstallPrompt();
+                        if (voiceEnabled) {
+                            speak('App installed successfully!');
+                        }
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Fallback for browsers that don't support installation
+                if (voiceEnabled) {
+                    speak('To install this app, use your browser\'s menu and select Add to Home Screen');
+                }
+                alert('To install this app:\n\n1. Open your browser menu (⋮)\n2. Select "Add to Home screen"\n3. Follow the prompts');
+            }
+        }
+
+        function showInstallButton() {
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-block';
+            }
+        }
+
+        function hideInstallButton() {
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+        }
+
+        function showInstallPrompt() {
+            const prompt = document.getElementById('installPrompt');
+            if (prompt && !localStorage.getItem('installPromptDismissed')) {
+                setTimeout(() => {
+                    prompt.style.display = 'flex';
+                }, 5000); // Show after 5 seconds
+            }
+        }
+
+        function dismissInstallPrompt() {
+            const prompt = document.getElementById('installPrompt');
+            if (prompt) {
+                prompt.style.display = 'none';
+                localStorage.setItem('installPromptDismissed', 'true');
+            }
+        }
+
+        // Auto-detect mobile and show desktop mode option
+        function isMobileDevice() {
+            return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || window.innerWidth <= 768;
+        }
+
+        // Enhanced mobile detection and initial setup
+        function initializeMobileFeatures() {
+            if (isMobileDevice()) {
+                // Show desktop mode button by default on mobile
+                const viewModeBtn = document.getElementById('viewModeBtn');
+                viewModeBtn.style.display = 'inline-block';
+                
+                // Auto-enable desktop mode if screen is very small
+                if (window.innerWidth <= 480) {
+                    setTimeout(() => {
+                        if (!localStorage.getItem('viewModePreference')) {
+                            // Ask user if they want desktop mode
+                            if (confirm('Your screen is small. Would you like to enable Desktop Mode for a better view?')) {
+                                toggleViewMode();
+                                localStorage.setItem('viewModePreference', 'desktop');
+                            } else {
+                                localStorage.setItem('viewModePreference', 'mobile');
+                            }
+                        }
+                    }, 2000);
+                }
+                
+                // Restore user preference
+                const preference = localStorage.getItem('viewModePreference');
+                if (preference === 'desktop' && !isDesktopMode) {
+                    toggleViewMode();
+                }
+            }
+        }
+
+        // Save view mode preference
+        function saveViewModePreference() {
+            localStorage.setItem('viewModePreference', isDesktopMode ? 'desktop' : 'mobile');
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Save the event so it can be triggered later
+            deferredPrompt = e;
+            // Show install button
+            showInstallButton();
+            // Show install prompt
+            showInstallPrompt();
+        });
+
+        // Listen for app installed event
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('App was installed');
+            hideInstallButton();
+            dismissInstallPrompt();
+            if (voiceEnabled) {
+                speak('Welcome to your new app!');
+            }
+        });
+
         // Initialize the app
         loadCustomFoods();
         loadFoods();
+        loadSavedTheme();
+        initializeMobileFeatures();
         
         // Close modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('doneModal');
+            const themePanel = document.getElementById('themePanel');
+            
             if (event.target === modal) {
                 closeDoneModal();
+            }
+            
+            if (event.target === themePanel) {
+                themePanel.style.display = 'none';
             }
         }
         
