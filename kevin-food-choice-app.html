@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevin's Food Choice Helper</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="An interactive food selection app to help Kevin choose what to eat">
+    <meta name="theme-color" content="#764ba2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Food Helper">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-TileImage" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='200' rx='30' fill='url(%23grad)' /%3E%3Ctext x='100' y='120' text-anchor='middle' font-size='80' fill='white'%3E🍴%3C/text%3E%3C/svg%3E">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='200' rx='30' fill='url(%23grad)' /%3E%3Ctext x='100' y='120' text-anchor='middle' font-size='80' fill='white'%3E🍴%3C/text%3E%3C/svg%3E">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab.active {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .food-item {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .food-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .food-item.selected {
+            background: #e8f5e9;
+            border: 3px solid #4caf50;
+            transform: scale(1.05);
+        }
+
+        .food-emoji {
+            font-size: 4em;
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .food-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .food-name {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .food-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .combo-counter {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff1744;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            animation: pulse 0.5s ease;
+            box-shadow: 0 4px 15px rgba(255, 23, 68, 0.4);
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: none;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .food-item.custom:hover .remove-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.1);
+        }
+
+        .combo-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 23, 68, 0.95);
+            color: white;
+            padding: 30px 50px;
+            border-radius: 30px;
+            font-size: 2em;
+            font-weight: bold;
+            z-index: 2000;
+            animation: comboPopup 0.5s ease;
+            box-shadow: 0 10px 40px rgba(255, 23, 68, 0.5);
+            display: none;
+        }
+
+        @keyframes comboPopup {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .selected-foods {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 100px;
+        }
+
+        .selected-foods h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .selected-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .selected-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .selected-item .emoji {
+            font-size: 1.5em;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .install-btn {
+            background: #9c27b0;
+        }
+
+        .install-btn:hover {
+            background: #7b1fa2;
+            transform: translateY(-3px);
+        }
+
+        .install-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(156, 39, 176, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(156, 39, 176, 0.3);
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .install-prompt button {
+            background: white;
+            color: #9c27b0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .install-prompt button:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .install-prompt .close-btn {
+            background: transparent;
+            color: white;
+            font-size: 1.2em;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .install-prompt .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .done-btn {
+            background: #4caf50;
+        }
+
+        .done-btn:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+        }
+
+        .clear-btn {
+            background: #f44336;
+        }
+
+        .clear-btn:hover {
+            background: #e53935;
+            transform: translateY(-3px);
+        }
+
+        .custom-btn {
+            background: #ff9800;
+        }
+
+        .custom-btn:hover {
+            background: #fb8c00;
+            transform: translateY(-3px);
+        }
+
+        .voice-btn {
+            background: #2196f3;
+        }
+
+        .voice-btn:hover {
+            background: #1976d2;
+            transform: translateY(-3px);
+        }
+
+        .voice-btn.active {
+            background: #4caf50;
+            animation: voicePulse 1s infinite;
+        }
+
+        @keyframes voicePulse {
+            0% { box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); }
+            50% { box-shadow: 0 5px 30px rgba(76, 175, 80, 0.6); }
+            100% { box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .modal-foods {
+            font-size: 3em;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .close-modal {
+            padding: 15px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .close-modal:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+
+        .custom-form {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-form input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .custom-form button {
+            padding: 15px 30px;
+            background: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .custom-form button:hover {
+            background: #fb8c00;
+            transform: translateY(-3px);
+        }
+
+        .image-upload-label {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #9c27b0;
+            color: white;
+            border-radius: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-label:hover {
+            background: #7b1fa2;
+            transform: translateY(-3px);
+        }
+
+        #imageUpload {
+            display: none;
+        }
+
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .food-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .food-emoji {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍴 Kevin's Food Choice Helper 🍴</h1>
+        <p class="subtitle">Tap the foods you want to eat today!</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showCategory('breakfast')">🌅 Breakfast</button>
+            <button class="tab" onclick="showCategory('lunch')">☀️ Lunch/Dinner</button>
+            <button class="tab" onclick="showCategory('snacks')">🍿 Snacks</button>
+            <button class="tab" onclick="showCategory('drinks')">🥤 Drinks</button>
+            <button class="tab" onclick="showCategory('fastfood')">🍟 Fast Food</button>
+            <button class="tab" onclick="showCategory('restaurants')">🏪 Restaurants</button>
+        </div>
+        
+        <div class="food-grid" id="foodGrid">
+            <!-- Food items will be dynamically loaded here -->
+        </div>
+        
+        <div class="selected-foods">
+            <h2>✨ My Choices Today ✨</h2>
+            <div class="selected-list" id="selectedList">
+                <p style="color: #999;">Tap foods above to add them here!</p>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn done-btn" onclick="showDoneModal()">✅ I'm Done!</button>
+            <button class="action-btn clear-btn" onclick="clearSelections()">🗑️ Clear All</button>
+            <button class="action-btn custom-btn" onclick="toggleCustomForm()">➕ Add Custom Food</button>
+            <button class="action-btn voice-btn" id="voiceToggle" onclick="toggleVoice()">🔊 Voice On</button>
+            <button class="action-btn install-btn" id="installBtn" onclick="installApp()" style="display: none;">📱 Install App</button>
+        </div>
+        
+        <div class="custom-form" id="customForm">
+            <input type="text" id="customFoodName" placeholder="Food name (e.g., Mac and Cheese)">
+            <input type="text" id="customFoodEmoji" placeholder="Emoji (e.g., 🧀) - optional">
+            <div style="margin: 15px 0;">
+                <label for="imageUpload" class="image-upload-label">📷 Add Photo</label>
+                <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
+                <img id="imagePreview" class="image-preview" alt="Food preview">
+            </div>
+            <button onclick="addCustomFood()">Add Food</button>
+            <button onclick="toggleCustomForm()">Cancel</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="doneModal">
+        <div class="modal-content">
+            <h2>🎉 Great Choices! 🎉</h2>
+            <p>Here's what you picked:</p>
+            <div class="modal-foods" id="modalFoods"></div>
+            <button class="close-modal" onclick="closeDoneModal()">👍 Okay!</button>
+        </div>
+    </div>
+    
+    <div class="combo-message" id="comboMessage"></div>
+    
+    <div class="install-prompt" id="installPrompt">
+        <span>📱 Install this app for a better experience!</span>
+        <button onclick="installApp()">Install</button>
+        <button class="close-btn" onclick="dismissInstallPrompt()">×</button>
+    </div>
+    
+    <script>
+        // Food data organized by categories
+        const foodData = {
+            breakfast: [
+                { emoji: '🥞', name: 'Pancakes', desc: 'Fluffy and sweet' },
+                { emoji: '🥣', name: 'Cereal', desc: 'Crunchy breakfast' },
+                { emoji: '🍳', name: 'Eggs', desc: 'Scrambled or fried' },
+                { emoji: '🥓', name: 'Bacon', desc: 'Crispy strips' },
+                { emoji: '🧇', name: 'Waffles', desc: 'With syrup' },
+                { emoji: '🥐', name: 'Croissant', desc: 'Buttery pastry' },
+                { emoji: '🍞', name: 'Toast', desc: 'With butter or jam' },
+                { emoji: '🥯', name: 'Bagel', desc: 'With cream cheese' }
+            ],
+            lunch: [
+                { emoji: '🍕', name: 'Pizza', desc: 'Cheese or pepperoni' },
+                { emoji: '🍔', name: 'Burger', desc: 'Juicy beef patty' },
+                { emoji: '🌮', name: 'Tacos', desc: 'Mexican favorite' },
+                { emoji: '🍝', name: 'Pasta', desc: 'Spaghetti or mac' },
+                { emoji: '🍗', name: 'Chicken', desc: 'Fried or grilled' },
+                { emoji: '🍜', name: 'Soup', desc: 'Warm and comfy' },
+                { emoji: '🥗', name: 'Salad', desc: 'Fresh veggies' },
+                { emoji: '🍱', name: 'Sushi', desc: 'Japanese rolls' },
+                { emoji: '🥟', name: 'Dumplings', desc: 'Korean or Chinese' },
+                { emoji: '🍛', name: 'Curry', desc: 'Rice and sauce' },
+                { emoji: '🥙', name: 'Wrap', desc: 'Chicken or veggie' },
+                { emoji: '🍖', name: 'BBQ', desc: 'Grilled meat' }
+            ],
+            snacks: [
+                { emoji: '🍟', name: 'French Fries', desc: 'Crispy potatoes' },
+                { emoji: '🍿', name: 'Popcorn', desc: 'Movie snack' },
+                { emoji: '🥨', name: 'Pretzel', desc: 'Salty twist' },
+                { emoji: '🍪', name: 'Cookies', desc: 'Sweet treats' },
+                { emoji: '🍦', name: 'Ice Cream', desc: 'Cold dessert' },
+                { emoji: '🍩', name: 'Donut', desc: 'Glazed or filled' },
+                { emoji: '🍓', name: 'Fruit', desc: 'Fresh berries' },
+                { emoji: '🧀', name: 'Cheese', desc: 'String or cubes' }
+            ],
+            drinks: [
+                { emoji: '🥤', name: 'Soda', desc: 'Fizzy drink' },
+                { emoji: '🧃', name: 'Juice Box', desc: 'Apple or orange' },
+                { emoji: '🥛', name: 'Milk', desc: 'White or chocolate' },
+                { emoji: '☕', name: 'Hot Chocolate', desc: 'Warm and sweet' },
+                { emoji: '🧋', name: 'Boba Tea', desc: 'With tapioca' },
+                { emoji: '💧', name: 'Water', desc: 'Stay hydrated' },
+                { emoji: '🥤', name: 'Smoothie', desc: 'Fruit blend' },
+                { emoji: '🍵', name: 'Tea', desc: 'Hot or iced' }
+            ],
+            fastfood: [
+                { emoji: '🍔', name: 'McDonald\'s', desc: 'Big Mac & McNuggets' },
+                { emoji: '🍗', name: 'Chick-fil-A', desc: 'Chicken sandwich' },
+                { emoji: '🌮', name: 'Taco Bell', desc: 'Tacos & burritos' },
+                { emoji: '🍕', name: 'Pizza Hut', desc: 'Pan pizza' },
+                { emoji: '🥪', name: 'Subway', desc: 'Fresh subs' },
+                { emoji: '🍔', name: 'Burger King', desc: 'Whopper' },
+                { emoji: '🍟', name: 'Wendy\'s', desc: 'Square burgers' },
+                { emoji: '🍕', name: 'Domino\'s', desc: 'Quick delivery' },
+                { emoji: '🌯', name: 'Chipotle', desc: 'Bowls & burritos' },
+                { emoji: '🍗', name: 'KFC', desc: 'Fried chicken' },
+                { emoji: '🍔', name: 'In-N-Out', desc: 'Animal style' },
+                { emoji: '🍔', name: 'Whataburger', desc: 'Texas favorite' }
+            ],
+            restaurants: [
+                { emoji: '🍕', name: 'Cane Rosso', desc: 'Pizza place' },
+                { emoji: '🌮', name: 'El Rincon', desc: 'Mexican food' },
+                { emoji: '🍔', name: 'Twisted Root', desc: 'Burgers' },
+                { emoji: '🥐', name: 'C² Cafe', desc: 'Coffee & pastries' },
+                { emoji: '🍜', name: 'Pho Pasteur', desc: 'Vietnamese soup' },
+                { emoji: '🍱', name: 'Blue Maki', desc: 'Sushi & Japanese' },
+                { emoji: '🥘', name: 'Babe\'s', desc: 'Chicken & comfort' },
+                { emoji: '🍖', name: 'Korean BBQ', desc: 'Grill your own' },
+                { emoji: '🍦', name: 'Beth Marie\'s', desc: 'Ice cream parlor' },
+                { emoji: '🥗', name: 'Jubilee Cafe', desc: 'Breakfast & lunch' }
+            ]
+        };
+        
+        let currentCategory = 'breakfast';
+        let selectedFoods = [];
+        let voiceEnabled = true;
+        let comboCounters = {};
+        let comboTimers = {};
+        let deferredPrompt;
+        
+        // Initialize speech synthesis
+        const synth = window.speechSynthesis;
+        
+        // Load custom foods from localStorage if available
+        function loadCustomFoods() {
+            const customFoods = localStorage.getItem('kevinCustomFoods');
+            if (customFoods) {
+                const parsed = JSON.parse(customFoods);
+                Object.keys(parsed).forEach(category => {
+                    if (foodData[category]) {
+                        foodData[category] = [...foodData[category], ...parsed[category]];
+                    }
+                });
+            }
+        }
+        
+        // Save custom foods to localStorage
+        function saveCustomFoods() {
+            const customFoods = {};
+            Object.keys(foodData).forEach(category => {
+                customFoods[category] = foodData[category].filter(food => food.custom);
+            });
+            localStorage.setItem('kevinCustomFoods', JSON.stringify(customFoods));
+        }
+        
+        function showCategory(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Load foods for this category
+            loadFoods();
+        }
+        
+        function loadFoods() {
+            const grid = document.getElementById('foodGrid');
+            grid.innerHTML = '';
+            
+            foodData[currentCategory].forEach((food, index) => {
+                const foodItem = document.createElement('div');
+                foodItem.className = 'food-item';
+                if (food.custom) {
+                    foodItem.classList.add('custom');
+                }
+                foodItem.onclick = (e) => {
+                    if (!e.target.classList.contains('remove-btn')) {
+                        handleFoodClick(food, foodItem);
+                    }
+                };
+                
+                // Check if this food is already selected
+                if (selectedFoods.find(f => f.name === food.name)) {
+                    foodItem.classList.add('selected');
+                }
+                
+                // Show combo counter if exists
+                const comboCount = comboCounters[food.name];
+                const counterDisplay = comboCount && comboCount > 1 ? 
+                    `<div class="combo-counter">${comboCount}</div>` : '';
+                
+                // Add remove button for custom foods
+                const removeButton = food.custom ? 
+                    `<button class="remove-btn" onclick="removeCustomFood('${food.name}', '${currentCategory}')">×</button>` : '';
+                
+                foodItem.innerHTML = `
+                    ${counterDisplay}
+                    ${removeButton}
+                    ${food.image ? 
+                        `<img src="${food.image}" alt="${food.name}" class="food-image">` : 
+                        `<div class="food-emoji">${food.emoji}</div>`
+                    }
+                    <div class="food-name">${food.name}</div>
+                    <div class="food-desc">${food.desc}</div>
+                `;
+                
+                grid.appendChild(foodItem);
+            });
+        }
+        
+        function removeCustomFood(foodName, category) {
+            if (confirm(`Remove ${foodName} from your custom foods?`)) {
+                // Remove from food data
+                const index = foodData[category].findIndex(f => f.name === foodName && f.custom);
+                if (index > -1) {
+                    foodData[category].splice(index, 1);
+                }
+                
+                // Remove from selected foods if present
+                const selectedIndex = selectedFoods.findIndex(f => f.name === foodName);
+                if (selectedIndex > -1) {
+                    selectedFoods.splice(selectedIndex, 1);
+                    updateSelectedList();
+                }
+                
+                // Save changes
+                saveCustomFoods();
+                
+                // Reload display
+                loadFoods();
+                
+                if (voiceEnabled) {
+                    speak(`Removed ${foodName}`);
+                }
+            }
+        }
+        
+        function handleFoodClick(food, element) {
+            // Speak the food name
+            if (voiceEnabled) {
+                speak(food.name);
+            }
+            
+            // Handle combo counter
+            if (!comboCounters[food.name]) {
+                comboCounters[food.name] = 0;
+            }
+            comboCounters[food.name]++;
+            
+            // Clear existing timer
+            if (comboTimers[food.name]) {
+                clearTimeout(comboTimers[food.name]);
+            }
+            
+            // Show combo message for milestones
+            if (comboCounters[food.name] % 10 === 0) {
+                showComboMessage(`Kevin likes ${food.name} ${comboCounters[food.name]} times! 🔥`);
+            }
+            
+            // Set timer to reset combo
+            comboTimers[food.name] = setTimeout(() => {
+                comboCounters[food.name] = 0;
+                loadFoods(); // Refresh display
+            }, 10000);
+            
+            // Toggle selection
+            toggleFood(food);
+        }
+        
+        function toggleFood(food) {
+            const index = selectedFoods.findIndex(f => f.name === food.name);
+            
+            if (index > -1) {
+                // Remove from selection
+                selectedFoods.splice(index, 1);
+            } else {
+                // Add to selection
+                selectedFoods.push(food);
+            }
+            
+            updateSelectedList();
+            loadFoods(); // Refresh to show selected state and combo counter
+        }
+        
+        function speak(text) {
+            if (!synth) return;
+            
+            // Cancel any ongoing speech
+            synth.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            synth.speak(utterance);
+        }
+        
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const btn = document.getElementById('voiceToggle');
+            btn.textContent = voiceEnabled ? '🔊 Voice On' : '🔇 Voice Off';
+            btn.classList.toggle('active', voiceEnabled);
+            
+            if (voiceEnabled) {
+                speak('Voice is on');
+            }
+        }
+        
+        function showComboMessage(message) {
+            const comboDiv = document.getElementById('comboMessage');
+            comboDiv.textContent = message;
+            comboDiv.style.display = 'block';
+            
+            // Speak the combo message
+            if (voiceEnabled) {
+                speak(message);
+            }
+            
+            setTimeout(() => {
+                comboDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        function updateSelectedList() {
+            const list = document.getElementById('selectedList');
+            
+            if (selectedFoods.length === 0) {
+                list.innerHTML = '<p style="color: #999;">Tap foods above to add them here!</p>';
+            } else {
+                list.innerHTML = selectedFoods.map(food => `
+                    <div class="selected-item">
+                        ${food.image ? 
+                            `<img src="${food.image}" alt="${food.name}" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : 
+                            `<span class="emoji">${food.emoji}</span>`
+                        }
+                        <span>${food.name}</span>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function clearSelections() {
+            selectedFoods = [];
+            updateSelectedList();
+            loadFoods();
+            
+            if (voiceEnabled) {
+                speak('All cleared');
+            }
+        }
+        
+        function showDoneModal() {
+            if (selectedFoods.length === 0) {
+                if (voiceEnabled) {
+                    speak('Please select at least one food first');
+                }
+                alert('Please select at least one food first! 😊');
+                return;
+            }
+            
+            const modal = document.getElementById('doneModal');
+            const modalFoods = document.getElementById('modalFoods');
+            
+            modalFoods.innerHTML = selectedFoods.map(food => 
+                food.image ? 
+                    `<img src="${food.image}" alt="${food.name}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">` : 
+                    food.emoji
+            ).join(' ');
+            
+            modal.style.display = 'flex';
+            
+            if (voiceEnabled) {
+                const foodNames = selectedFoods.map(f => f.name).join(', ');
+                speak(`Great choices! You picked ${foodNames}`);
+            }
+        }
+        
+        function closeDoneModal() {
+            document.getElementById('doneModal').style.display = 'none';
+        }
+        
+        function toggleCustomForm() {
+            const form = document.getElementById('customForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            
+            // Reset form
+            document.getElementById('customFoodName').value = '';
+            document.getElementById('customFoodEmoji').value = '';
+            document.getElementById('imageUpload').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+        
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function addCustomFood() {
+            const name = document.getElementById('customFoodName').value.trim();
+            const emoji = document.getElementById('customFoodEmoji').value.trim() || '🍽️';
+            const imagePreview = document.getElementById('imagePreview');
+            const image = imagePreview.style.display === 'block' ? imagePreview.src : null;
+            
+            if (!name) {
+                if (voiceEnabled) {
+                    speak('Please enter a food name');
+                }
+                alert('Please enter a food name! 😊');
+                return;
+            }
+            
+            const newFood = {
+                emoji: emoji,
+                name: name,
+                desc: 'Custom food',
+                image: image,
+                custom: true
+            };
+            
+            foodData[currentCategory].push(newFood);
+            saveCustomFoods();
+            
+            if (voiceEnabled) {
+                speak(`Added ${name} to ${currentCategory}`);
+            }
+            
+            // Clear form
+            toggleCustomForm();
+            
+            // Reload foods
+            loadFoods();
+        }
+        
+        // PWA Installation Functions
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        hideInstallButton();
+                        dismissInstallPrompt();
+                        if (voiceEnabled) {
+                            speak('App installed successfully!');
+                        }
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Fallback for browsers that don't support installation
+                if (voiceEnabled) {
+                    speak('To install this app, use your browser\'s menu and select Add to Home Screen');
+                }
+                alert('To install this app:\n\n1. Open your browser menu (⋮)\n2. Select "Add to Home screen"\n3. Follow the prompts');
+            }
+        }
+
+        function showInstallButton() {
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-block';
+            }
+        }
+
+        function hideInstallButton() {
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+        }
+
+        function showInstallPrompt() {
+            const prompt = document.getElementById('installPrompt');
+            if (prompt && !localStorage.getItem('installPromptDismissed')) {
+                setTimeout(() => {
+                    prompt.style.display = 'flex';
+                }, 5000); // Show after 5 seconds
+            }
+        }
+
+        function dismissInstallPrompt() {
+            const prompt = document.getElementById('installPrompt');
+            if (prompt) {
+                prompt.style.display = 'none';
+                localStorage.setItem('installPromptDismissed', 'true');
+            }
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Save the event so it can be triggered later
+            deferredPrompt = e;
+            // Show install button
+            showInstallButton();
+            // Show install prompt
+            showInstallPrompt();
+        });
+
+        // Listen for app installed event
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('App was installed');
+            hideInstallButton();
+            dismissInstallPrompt();
+            if (voiceEnabled) {
+                speak('Welcome to your new app!');
+            }
+        });
+
+        // Initialize the app
+        loadCustomFoods();
+        loadFoods();
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('doneModal');
+            if (event.target === modal) {
+                closeDoneModal();
+            }
+        }
+        
+        // Initialize voice
+        if (voiceEnabled) {
+            // Wait a bit for voices to load
+            setTimeout(() => {
+                speak('Welcome to Kevin\'s Food Choice Helper');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
